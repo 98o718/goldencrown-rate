@@ -13,6 +13,8 @@ const messageHandler: Handler = async (event: HandlerEvent) => {
 
 	const { value } = await exchangeRateHandler();
 
+	console.log('token', process.env.BOT_TOKEN)
+
 	const messageResponse = await fetch('https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
