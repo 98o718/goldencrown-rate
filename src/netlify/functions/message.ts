@@ -1,6 +1,8 @@
-import { builder, Handler } from '@netlify/functions';
+import { builder, Handler, HandlerEvent } from '@netlify/functions';
 
-const messageHandler: Handler = async () => {
+const messageHandler: Handler = async (event: HandlerEvent) => {
+	console.log(event);
+
 	return {
 		statusCode: 200,
 		body: JSON.stringify({ message: 'Hello World' }),
