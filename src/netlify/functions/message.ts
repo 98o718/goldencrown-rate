@@ -14,7 +14,10 @@ const messageHandler: Handler = async (event: HandlerEvent) => {
 			goldenCrownExchangeRateGetter: getGoldenCrownExchangeRate,
 		});
 
-		const messageSender = createMessageSender(getBotToken());
+		const messageSender = createMessageSender({
+			botToken: getBotToken(),
+			chatId: extractChatId(event),
+		});
 
 		const sendExchangeRateMessage = createExchangeRateMessageSender({
 			messageSender,
@@ -22,7 +25,7 @@ const messageHandler: Handler = async (event: HandlerEvent) => {
 			mdStringEscaper: escapeMDString,
 		});
 	
-		await sendExchangeRateMessage(extractChatId(event));
+		await sendExchangeRateMessage();
 
 		return { statusCode: 200 };
 	} catch (error: unknown) {

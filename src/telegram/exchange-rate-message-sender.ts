@@ -1,21 +1,21 @@
 interface Dependencies {
 	exchangeRateGetter(): Promise<number>;
-	messageSender(chatId: number, text: string): Promise<void>;
+	messageSender(text: string): Promise<void>;
 	mdStringEscaper(value: string): string;
 }
 
-export function createExchangeRateMessageSender(dependencies: Dependencies): (chatId: number) => Promise<void> {
+export function createExchangeRateMessageSender(dependencies: Dependencies): () => Promise<void> {
 	const {
 		exchangeRateGetter: getExchangeRate,
 		messageSender: sendMessage,
 		mdStringEscaper: escapeMDString,
 	} = dependencies;
 
-	return async (chatId: number) => {
+	return async () => {
 		const exchangeRate = await getExchangeRate();
 
 		const exchangeRateMessage = `GEL/RUB: *${escapeMDString(exchangeRate.toString())}₽*`;
 
-		await sendMessage(chatId, exchangeRateMessage);
+		await sendMessage(exchangeRateMessage);
 	};
 }

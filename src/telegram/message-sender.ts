@@ -1,8 +1,18 @@
 import fetch from 'node-fetch';
 
-export function createMessageSender(botToken: string): (chatId: number, text: string) => Promise<void> {
-	return async (chatId: number, text: string) => {
-		const result = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+interface Dependencies {
+	botToken: string;
+	chatId: number;
+}
+
+export function createMessageSender(dependencies: Dependencies): (text: string) => Promise<void> {
+	const {
+		botToken,
+		chatId,
+	} = dependencies;
+
+	return async (text: string) => {
+		await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
@@ -11,8 +21,5 @@ export function createMessageSender(botToken: string): (chatId: number, text: st
 				parse_mode: 'MarkdownV2',
 			}),
 		});
-
-		const a = await result.json();
-		console.log('Result:', a)
 	};
 }
