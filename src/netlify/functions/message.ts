@@ -1,4 +1,4 @@
-import { builder, Handler, HandlerEvent } from '@netlify/functions';
+import { Handler, HandlerEvent } from '@netlify/functions';
 
 const messageHandler: Handler = async (event: HandlerEvent) => {
 	console.log(event);
@@ -9,4 +9,4 @@ const messageHandler: Handler = async (event: HandlerEvent) => {
 	}
 };
 
-export const handler = builder(messageHandler);
+export { messageHandler as handler };
