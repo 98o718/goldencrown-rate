@@ -8,6 +8,7 @@ export function createMessageSender(botToken: string): (chatId: number, text: st
 			body: JSON.stringify({
 				chat_id: chatId,
 				text,
+				parse_mode: 'MarkdownV2',
 			}),
 		});
 	};
