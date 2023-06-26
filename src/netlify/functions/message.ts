@@ -13,9 +13,7 @@ const messageHandler: Handler = async (event: HandlerEvent) => {
 
 	const { value } = await exchangeRateHandler();
 
-	console.log('token', process.env.BOT_TOKEN)
-
-	const messageResponse = await fetch('https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage', {
+	await fetch(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
@@ -23,9 +21,6 @@ const messageHandler: Handler = async (event: HandlerEvent) => {
 			text: `Курс GEL/USD: ${value}₽`,
 		})
 	});
-
-	const message = await messageResponse.json();
-	console.log('message', message)
 
 	return { statusCode: 200 };
 };
