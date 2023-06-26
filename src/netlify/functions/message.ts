@@ -1,28 +1,40 @@
-import fetch from 'node-fetch';
 import { Handler, HandlerEvent } from '@netlify/functions';
 
-import { createExchangeRateHandler } from '../../exchange-rate/exchange-rate-handler';
 import { getGoldenCrownExchangeRate } from '../../exchange-rate/golden-crown-exchange-rate-handler';
+import { createExchangeRateGetter } from '../../exchange-rate/exchange-rate-getter';
+import { createMessageSender } from '../../telegram/message-sender';
+import { createExchangeRateMessageSender } from '../../telegram/exchange-rate-message-sender';
+import { extractChatId } from '../../telegram/chat-id-extractor';
+import { getBotToken } from '../../telegram/bot-token-getter';
 
 const messageHandler: Handler = async (event: HandlerEvent) => {
-	if (event.body === null) {
+	try {
+		const exchangeRateGetter = createExchangeRateGetter({
+			goldenCrownExchangeRateGetter: getGoldenCrownExchangeRate,
+		});
+	
+		const messageSender = createMessageSender(getBotToken());
+	
+		const sendExchangeRateMessage = createExchangeRateMessageSender({
+			messageSender,
+			exchangeRateGetter,
+		});
+	
+		await sendExchangeRateMessage(extractChatId(event));
+	
 		return { statusCode: 200 };
+	} catch (error: unknown) {
+		const errorMessage = error instanceof Error
+			? error.message
+			: undefined;
+
+		return {
+			statusCode: 500,
+			body: JSON.stringify({
+				message: errorMessage || 'Unknown error',
+			}),
+		};
 	}
-
-	const exchangeRateHandler = createExchangeRateHandler({ getGoldenCrownExchangeRate });
-
-	const { value } = await exchangeRateHandler();
-
-	await fetch(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({
-			chat_id: JSON.parse(event.body).message.chat.id,
-			text: `Курс GEL/USD: ${value}₽`,
-		})
-	});
-
-	return { statusCode: 200 };
 };
 
 export { messageHandler as handler };
