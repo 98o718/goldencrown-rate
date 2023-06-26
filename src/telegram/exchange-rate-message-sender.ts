@@ -14,7 +14,7 @@ export function createExchangeRateMessageSender(dependencies: Dependencies): (ch
 	return async (chatId: number) => {
 		const exchangeRate = await getExchangeRate();
 
-		const exchangeRateMessage = `Курс GEL/RUB: *${escapeMDString(exchangeRate.toString())}₽*`;
+		const exchangeRateMessage = `GEL/RUB: *${escapeMDString(exchangeRate.toString())}₽*`;
 
 		await sendMessage(chatId, exchangeRateMessage);
 	};
