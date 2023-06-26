@@ -8,14 +8,14 @@ interface GoldenCrownExchangeRateResponse {
 }
 
 interface Dependencies {
-	getGoldenCrownExchangeRate(amount?: number): Promise<GoldenCrownExchangeRateResponse>;
+	getGoldenCrownExchangeRate(): Promise<GoldenCrownExchangeRateResponse>;
 }
 
-export function createExchangeRateHandler(dependencies: Dependencies): (amount?: number) => Promise<ExchangeRate> {
+export function createExchangeRateHandler(dependencies: Dependencies): () => Promise<ExchangeRate> {
 	const { getGoldenCrownExchangeRate } = dependencies;
 
-	return async (amount?: number) => {
-		const { exchangeRate } = await getGoldenCrownExchangeRate(amount);
+	return async () => {
+		const { exchangeRate } = await getGoldenCrownExchangeRate();
 	
 		return {
 			value: exchangeRate,
