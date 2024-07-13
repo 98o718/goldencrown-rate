@@ -9,6 +9,8 @@ import { getBotToken } from '../../telegram/bot-token-getter';
 import { escapeMDString } from '../../telegram/md-string-escaper';
 
 const messageHandler: Handler = async (event: HandlerEvent) => {
+	console.log('event', JSON.stringify(event, undefined, 4));
+
 	try {
 		const exchangeRateGetter = createExchangeRateGetter({
 			goldenCrownExchangeRateGetter: getGoldenCrownExchangeRate,
