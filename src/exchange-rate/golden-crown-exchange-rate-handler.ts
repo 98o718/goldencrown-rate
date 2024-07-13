@@ -9,7 +9,7 @@ export async function getGoldenCrownExchangeRate(): Promise<GoldenCrownExchangeR
 
 	const response = await fetch('https://koronapay.com/transfers/online/api/transfers/tariffs?sendingCountryId=RUS&sendingCurrencyId=810&receivingCountryId=GEO&receivingCurrencyId=981&paymentMethod=debitCard&receivingAmount=100&receivingMethod=cash&paidNotificationEnabled=false');
 
-	console.log('got GC response, parsing...');
+	console.log('got GC response with status', response.status);
 
 	const currencyRates = (await response.json()) as GoldenCrownExchangeRateResponse[];
 
