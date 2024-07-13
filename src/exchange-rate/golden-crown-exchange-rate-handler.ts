@@ -5,7 +5,20 @@ interface GoldenCrownExchangeRateResponse {
 export async function getGoldenCrownExchangeRate(): Promise<GoldenCrownExchangeRateResponse> {
 	console.log('make GC request');
 
-	const response = await fetch('https://koronapay.com/transfers/online/api/transfers/tariffs?sendingCountryId=RUS&sendingCurrencyId=810&receivingCountryId=GEO&receivingCurrencyId=981&paymentMethod=debitCard&receivingAmount=100&receivingMethod=cash&paidNotificationEnabled=false');
+	const url = new URL('https://koronapay.com/transfers/online/api/transfers/tariffs');
+
+	url.searchParams.append('sendingCountryId', 'RUS');
+	url.searchParams.append('sendingCurrencyId', '810');
+	url.searchParams.append('receivingCountryId', 'GEO');
+	url.searchParams.append('receivingCurrencyId', '981');
+	url.searchParams.append('paymentMethod', 'debitCard');
+	url.searchParams.append('receivingAmount', '100');
+	url.searchParams.append('receivingMethod', 'cash');
+	url.searchParams.append('paidNotificationEnabled', 'false');
+
+	const response = await fetch(url);
+
+	console.log('url', url.href)
 
 	console.log('got GC response with status', response.status);
 
