@@ -12,6 +12,8 @@ export function createMessageSender(dependencies: Dependencies): (text: string) 
 	} = dependencies;
 
 	return async (text: string) => {
+		console.log('sending message');
+
 		await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -21,5 +23,7 @@ export function createMessageSender(dependencies: Dependencies): (text: string) 
 				parse_mode: 'MarkdownV2',
 			}),
 		});
+
+		console.log('message sent');
 	};
 }

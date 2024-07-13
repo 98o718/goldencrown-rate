@@ -14,6 +14,8 @@ export function createExchangeRateMessageSender(dependencies: Dependencies): () 
 	return async () => {
 		const exchangeRate = await getExchangeRate();
 
+		console.log('got rate', exchangeRate);
+
 		const exchangeRateMessage = `GEL/RUB: *${escapeMDString(exchangeRate.toString())}₽*`;
 
 		await sendMessage(exchangeRateMessage);
