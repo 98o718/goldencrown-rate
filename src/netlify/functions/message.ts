@@ -31,6 +31,8 @@ const messageHandler: Handler = async (event: HandlerEvent) => {
 
 		return { statusCode: 200 };
 	} catch (error: unknown) {
+		console.log('error', JSON.stringify(error, undefined, 4));
+
 		const errorMessage = error instanceof Error
 			? error.message
 			: undefined;
