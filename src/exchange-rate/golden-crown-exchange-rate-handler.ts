@@ -11,6 +11,8 @@ export async function getGoldenCrownExchangeRate(): Promise<GoldenCrownExchangeR
 
 	console.log('got GC response with status', response.status);
 
+	console.log(await response.clone().text())
+
 	const currencyRates = (await response.json()) as GoldenCrownExchangeRateResponse[];
 
 	console.log('response parsed');
